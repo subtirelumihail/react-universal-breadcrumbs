@@ -1,3 +1,20 @@
-.Breadcrumbs {
-  color: green;
+.universal-breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.universal-breadcrumbs-breadcrumb {
+  display: flex;
+}
+
+.universal-breadcrumbs-breadcrumb-divider {
+  display: flex;
+}
+
+.universal-breadcrumbs-breadcrumb--link {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }

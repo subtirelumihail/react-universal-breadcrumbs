@@ -1,11 +1,8 @@
-# npm-react-typescript-template
+# react-universal-breadcrumbs
 
-A template for publishing a React + TypeScript package to npm
+A very simple to use react breadcrumbs component which is completely router-independent, mobile friendly, easy to extend and rich in features
 
-## How to use
-
-Fork this repo, clone it to your local computer, and edit the `package.json` along with every other required file to match your project.
-Write the code for your package in TypeScript and Sass, compile it, and publish it to [npm](https://npmjs.com).
+## How to work on this plugin
 
 To compile your code once, run
 
@@ -30,5 +27,3 @@ Update the package version accordingly by using
 Then publish your package by running
 
 - `npm publish`
-
-### Happy Building ♡
