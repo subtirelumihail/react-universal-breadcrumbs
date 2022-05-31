@@ -3,7 +3,7 @@ import { ChevronRight, ChevronLeft } from 'react-feather'
 import classnames from 'classnames'
 import useReactPath from './hooks/useReactPath'
 import useWindowSize from './hooks/useWindowSize'
-import Breadcrumb from './components/Breadcrumb'
+import Breadcrumb, { BreadcrumbProps } from './components/Breadcrumb'
 import './styles.scss'
 
 export interface BreadcrumbsPropsInterface {
@@ -19,6 +19,7 @@ export interface BreadcrumbsPropsInterface {
   goBackToPreviousRoute?: any
   isMobileFriendly?: boolean
   mobileBreakpoint?: number
+  overwrite?: BreadcrumbProps[]
 }
 
 const Breadcrumbs: React.FC<BreadcrumbsPropsInterface> = ({
@@ -32,6 +33,7 @@ const Breadcrumbs: React.FC<BreadcrumbsPropsInterface> = ({
   currentPageClassName,
   previousPageClassName,
   homeIcon,
+  overwrite,
   transitionAction,
   goBackTransitionAction,
 }) => {
@@ -96,7 +98,36 @@ const Breadcrumbs: React.FC<BreadcrumbsPropsInterface> = ({
     <div className={classnames(className, 'universal-breadcrumbs')}>
       {breadcrumbs.length > 1 &&
         breadcrumbs.map((page: string, index: number) => {
+          let currentOverwrite: any = {}
           const currentPath = breadcrumbs.slice(0, index + 1).join('/')
+          if (overwrite) {
+            currentOverwrite = overwrite.find((element) => {
+              // /page/123/abc -> currentPath
+              // /page/:id/abc -> element.path
+              // if (element.path === currentPath) return true;
+              let counter = 0
+              const pathLength = currentPath
+                .split('/')
+                .filter((p: string) => p.trim().length > 0).length // 3
+              const elementPathLength = element.path
+                .split('/')
+                .filter((p: string) => p.trim().length > 0).length
+
+              currentPath
+                .split('/')
+                .filter((p: string) => p.trim().length > 0)
+                .forEach((path: string, index: number) => {
+                  const elementPath = element.path
+                    .split('/')
+                    .filter((p: string) => p.trim().length > 0)[index]
+                  if (elementPath && elementPath.charAt(0) === ':')
+                    return ++counter
+                  if (path === elementPath) return ++counter
+                  return false
+                })
+              return counter === pathLength && counter === elementPathLength
+            })
+          }
           return (
             <Breadcrumb
               key={currentPath}
@@ -106,6 +137,7 @@ const Breadcrumbs: React.FC<BreadcrumbsPropsInterface> = ({
               homeIcon={homeIcon}
               path={currentPath}
               page={page}
+              overwrite={currentOverwrite}
               divider={divider}
               isLastChild={breadcrumbs.length === index + 1}
               transitionAction={transitionAction}

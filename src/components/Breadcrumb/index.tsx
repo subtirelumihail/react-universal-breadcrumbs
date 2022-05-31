@@ -2,9 +2,10 @@ import React from 'react'
 import classnames from 'classnames'
 import * as Icons from 'react-feather'
 
-interface BreadcrumbProps {
+export interface BreadcrumbProps {
   path: string
   page: string
+  clickable?: boolean
   className?: any
   currentPageClassName?: any
   previousPageClassName?: any
@@ -13,20 +14,29 @@ interface BreadcrumbProps {
   icon?: string
   homeIcon?: string
   transitionAction?: any
+  component?: any
+  overwrite?: BreadcrumbProps
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
-  path = '',
-  page = '',
   isLastChild = false,
-  divider,
-  className,
-  currentPageClassName,
-  previousPageClassName,
-  icon,
-  homeIcon,
-  transitionAction,
+  overwrite = {},
+  path = '',
+  ...props
 }: any) => {
+  const newProps = { ...props, ...overwrite }
+  const {
+    page = '',
+    clickable = true,
+    component,
+    divider,
+    className,
+    currentPageClassName,
+    previousPageClassName,
+    icon,
+    homeIcon,
+    transitionAction,
+  } = newProps
   const handleTransition = () => {
     if (isLastChild) {
       return
@@ -50,10 +60,16 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
           'universal-breadcrumbs-breadcrumb--link': !isLastChild,
           'universal-breadcrumbs-breadcrumb--current': isLastChild,
         })}
-        onClick={handleTransition}
+        onClick={clickable && handleTransition}
       >
-        {icon && <IconComponent />}
-        {page === '' ? <HomeIcon /> : page.replace(/-|_/gi, ' ')}
+        {component ? (
+          component
+        ) : (
+          <>
+            {icon && page !== '' && <IconComponent />}
+            {page === '' ? <HomeIcon /> : page.replace(/-|_/gi, ' ')}
+          </>
+        )}
       </div>
       {!isLastChild && (
         <div className="universal-breadcrumbs-breadcrumb-divider">
