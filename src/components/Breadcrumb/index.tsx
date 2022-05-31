@@ -38,6 +38,9 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
     transitionAction,
   } = newProps
   const handleTransition = () => {
+    if (!clickable) {
+      return
+    }
     if (isLastChild) {
       return
     }
@@ -57,10 +60,10 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
         className={classnames(className, 'universal-breadcrumbs-breadcrumb', {
           [previousPageClassName]: !isLastChild,
           [currentPageClassName]: isLastChild,
-          'universal-breadcrumbs-breadcrumb--link': !isLastChild,
+          'universal-breadcrumbs-breadcrumb--link': !isLastChild && clickable,
           'universal-breadcrumbs-breadcrumb--current': isLastChild,
         })}
-        onClick={clickable && handleTransition}
+        onClick={handleTransition}
       >
         {component ? (
           component

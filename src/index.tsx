@@ -3,7 +3,7 @@ import { ChevronRight, ChevronLeft } from 'react-feather'
 import classnames from 'classnames'
 import useReactPath from './hooks/useReactPath'
 import useWindowSize from './hooks/useWindowSize'
-import Breadcrumb, { BreadcrumbProps } from './components/Breadcrumb'
+import InternalBreadcrumb, { BreadcrumbProps } from './components/Breadcrumb'
 import './styles.scss'
 
 export interface BreadcrumbsPropsInterface {
@@ -129,7 +129,7 @@ const Breadcrumbs: React.FC<BreadcrumbsPropsInterface> = ({
             })
           }
           return (
-            <Breadcrumb
+            <InternalBreadcrumb
               key={currentPath}
               className={breadcrumbClassName}
               currentPageClassName={currentPageClassName}
@@ -147,5 +147,7 @@ const Breadcrumbs: React.FC<BreadcrumbsPropsInterface> = ({
     </div>
   )
 }
+
+export const Breadcrumb = InternalBreadcrumb
 
 export default Breadcrumbs
