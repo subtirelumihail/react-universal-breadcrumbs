@@ -51,7 +51,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
     }
   }
 
-  const IconComponent = icon && Icons[icon]
+  const IconComponent = icon && typeof icon === 'string' && Icons[icon]
   const HomeIcon = homeIcon ? Icons[homeIcon] : Icons.Home
 
   return (
@@ -69,7 +69,9 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
           component
         ) : (
           <>
-            {icon && page !== '' && <IconComponent />}
+            {icon &&
+              page !== '' &&
+              (typeof icon === 'string' ? <IconComponent /> : icon)}
             {page === '' ? <HomeIcon /> : page.replace(/-|_/gi, ' ')}
           </>
         )}
