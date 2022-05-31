@@ -12,29 +12,29 @@ export interface BreadcrumbProps {
   isLastChild?: boolean
   divider?: any
   icon?: string
-  homeIcon?: string
+  homeIcon?: any
   transitionAction?: any
   component?: any
   overwrite?: BreadcrumbProps
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
+  path = '',
   isLastChild = false,
   overwrite = {},
-  path = '',
   ...props
 }: any) => {
   const newProps = { ...props, ...overwrite }
   const {
     page = '',
     clickable = true,
+    homeIcon = 'Home',
     component,
     divider,
     className,
     currentPageClassName,
     previousPageClassName,
     icon,
-    homeIcon,
     transitionAction,
   } = newProps
   const handleTransition = () => {
@@ -52,7 +52,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   }
 
   const IconComponent = icon && typeof icon === 'string' && Icons[icon]
-  const HomeIcon = homeIcon ? Icons[homeIcon] : Icons.Home
+  const HomeIcon = homeIcon && typeof homeIcon === 'string' && Icons[homeIcon]
 
   return (
     <>
@@ -72,7 +72,15 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
             {icon &&
               page !== '' &&
               (typeof icon === 'string' ? <IconComponent /> : icon)}
-            {page === '' ? <HomeIcon /> : page.replace(/-|_/gi, ' ')}
+            {page === '' ? (
+              typeof homeIcon === 'string' ? (
+                <HomeIcon />
+              ) : (
+                homeIcon
+              )
+            ) : (
+              page.replace(/-|_/gi, ' ')
+            )}
           </>
         )}
       </div>
