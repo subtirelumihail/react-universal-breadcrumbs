@@ -5,6 +5,9 @@ import * as Icons from 'react-feather'
 interface BreadcrumbProps {
   path: string
   page: string
+  className?: any
+  currentPageClassName?: any
+  previousPageClassName?: any
   isLastChild?: boolean
   divider?: any
   icon?: string
@@ -15,8 +18,11 @@ interface BreadcrumbProps {
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
   path = '',
   page = '',
-  divider,
   isLastChild = false,
+  divider,
+  className,
+  currentPageClassName,
+  previousPageClassName,
   icon,
   homeIcon,
   transitionAction,
@@ -38,8 +44,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   return (
     <>
       <div
-        className={classnames('universal-breadcrumbs-breadcrumb', {
+        className={classnames(className, 'universal-breadcrumbs-breadcrumb', {
+          [previousPageClassName]: !isLastChild,
+          [currentPageClassName]: isLastChild,
           'universal-breadcrumbs-breadcrumb--link': !isLastChild,
+          'universal-breadcrumbs-breadcrumb--current': isLastChild,
         })}
         onClick={handleTransition}
       >
